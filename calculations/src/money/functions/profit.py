@@ -77,6 +77,7 @@ if __name__ == '__main__':
     result = as.calculate_for_monthly_income(transfers, as.saldo)
     #print "income_no_profit= " + str(result["income"])
     #print "income_saldo= " + str(result["income_saldo"])
+    
     print "profit= " + str(result["total"]-as.saldo-result["transfes_overall"])
     print "total= "+str(result["total"])
     konto_profit = result["total"]-as.saldo-result["transfes_overall"]        
