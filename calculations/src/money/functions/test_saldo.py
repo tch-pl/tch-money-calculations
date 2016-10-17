@@ -9,5 +9,5 @@ class TestSaldo(TestCase):
     def test_income(self):
         saldo = Saldo()
         saldo.income(1)
-        print(saldo.saldo)
+        self.assertEquals(len(saldo.saldo.keys()), 1)
 
