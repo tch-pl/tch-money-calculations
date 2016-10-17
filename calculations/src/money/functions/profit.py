@@ -2,7 +2,7 @@ from __future__ import division
 import calendar
 from calendar import Calendar
  
-DURATION_ENUM = {"month":12, "day":365, "end":1}
+CAPITALIZATION = {"month":12, "day":365, "end":1}
 
 class Deposit:
     def __init__(self, saldo=0, interest=0, duration=0, tax=19, year=2010):
@@ -10,7 +10,7 @@ class Deposit:
         self.interest = interest
         self.duration = duration
         self.capitalisation_key="month"
-        self.capitalisation = DURATION_ENUM[self.capitalisation_key]
+        self.capitalisation = CAPITALIZATION[self.capitalisation_key]
         self.tax = tax
         self.year = year
     
@@ -23,7 +23,7 @@ class Deposit:
     
     def daily_profit(self, saldo):
         capitalisation_key="day"
-        capitalisation = DURATION_ENUM[capitalisation_key]
+        capitalisation = CAPITALIZATION[capitalisation_key]
         interest = self.normalize_capitalisation(self.interest, capitalisation)
         profit = interest*saldo
         return profit
@@ -59,7 +59,7 @@ class SavingsAccount(Deposit):
     def __init__(self, saldo=0, interest=0, duration=0, tax=19, year=2010):
         Deposit.__init__(self, saldo, interest, duration,tax, year)
         self.capitalisation_key="month"
-        self.capitalisation=DURATION_ENUM[self.capitalisation_key]
+        self.capitalisation=CAPITALIZATION[self.capitalisation_key]
     
     def calculate_for_monthly_income(self, transfers, saldo):
         transfes_overall = 0
@@ -72,19 +72,19 @@ class SavingsAccount(Deposit):
         return {"total":saldo, "transfes_overall":transfes_overall}
         
 if __name__ == '__main__':
-    as = SavingsAccount(saldo=5000,interest=4.1, duration=12, year=2010, tax=19)
+    sa = SavingsAccount(saldo=5000,interest=4.1, duration=12, year=2010, tax=19)
     transfers= [1500,1500,1500,1500,1500,1500,0,0]
-    result = as.calculate_for_monthly_income(transfers, as.saldo)
+    result = sa.calculate_for_monthly_income(transfers, sa.saldo)
     #print "income_no_profit= " + str(result["income"])
     #print "income_saldo= " + str(result["income_saldo"])
     
-    print "profit= " + str(result["total"]-as.saldo-result["transfes_overall"])
-    print "total= "+str(result["total"])
-    konto_profit = result["total"]-as.saldo-result["transfes_overall"]        
-    as = SavingsAccount(saldo=10000,interest=5.35, duration=12, tax=19, year=2010)
-    as.capitalisation_key="end"
-    as.capitalisation=DURATION_ENUM[as.capitalisation_key]
-    result2 = as.calculate_total_profit(as.saldo)
-    print "lokata= "+str(result2-as.saldo)
-    print "lokata= "+str(konto_profit+(result2-as.saldo))
+    print ("profit= " + str(result["total"]-sa.saldo-result["transfes_overall"]))
+    print("total= "+str(result["total"]))
+    konto_profit = result["total"]-sa.saldo-result["transfes_overall"]        
+    sa = SavingsAccount(saldo=10000,interest=5.35, duration=12, tax=19, year=2010)
+    sa.capitalisation_key="end"
+    sa.capitalisation=CAPITALIZATION[sa.capitalisation_key]
+    result2 = sa.calculate_total_profit(sa.saldo)
+    print ("lokata= "+str(result2-sa.saldo))
+    print ("lokata= "+str(konto_profit+(result2-sa.saldo)))
     
