@@ -33,3 +33,14 @@ class Saldo:
         if value > 0:
              return
         self.operations.append(-value)
+
+    def interests(self, value, percent):
+        return value * percent/100
+
+class InterestConfiguration:
+    def __init__(self):
+        self.interstAmount = 0
+        self.interestCalculationType = 0
+        self.interestDuration = 0
+
+
