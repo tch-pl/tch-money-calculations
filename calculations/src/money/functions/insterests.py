@@ -1,14 +1,13 @@
 import datetime
+from enum import Enum
 
 class Saldo:
     '''
     saldo
     operacje na saldo= [kwota, data]
-    okresy rozliczeniowe = naliczanie odsetek
-    stopa procentowa
-    okres = [początek naliczania] do [koniec naliczania]
 
     '''
+
     def __init__(self):
         self.saldo = {}
 
@@ -19,28 +18,61 @@ class Saldo:
     '''
 
     def income(self, value, date=None):
-        if value < 0:
+        if value < 0 or date is None:
             return
-        self.saldo[datetime.datetime.now()]=value
-
+        self.saldo[datetime.datetime.now()] = value
 
     '''
     Method decreases saldo
         value has to be negative
         else method has no effect
     '''
-    def outcome(self, value):
-        if value > 0:
-             return
-        self.operations.append(-value)
 
-    def interests(self, value, percent):
-        return value * percent/100
+    def outcome(self, value, date=None):
+        if value > 0 or date is None:
+            return
+        self.saldo[datetime.datetime.now()] = value
 
-class InterestConfiguration:
+    def saldo(self, value, percent):
+        total = 0
+        for v in self.saldo.values():
+            total += v
+        return total
+
+
+class Interests:
+    '''
+    okresy rozliczeniowe = naliczanie odsetek
+    stopa procentowa
+    okres = [początek naliczania] do [koniec naliczania]
+    '''
+
     def __init__(self):
         self.interstAmount = 0
-        self.interestCalculationType = 0
+        self.interestCalculationType = InterestsCalculationType.monthly
         self.interestDuration = 0
+        self.interestStartDate = None
+
+    '''
+    zwraca daty kiedy naliczane sa odsetki
+    '''
+    def chargeDates(self):
+        if self.interestCalculationType == InterestsCalculationType.monthly:
+            pass
+        elif self.interestCalculationType == InterestsCalculationType.daily:
+            pass
+        elif self.interestCalculationType == InterestsCalculationType.yearly:
+            pass
+        return []
+
+    '''
+    oblicza wartosc powiekszona o odsetki
+    '''
+    def plusInterests(self, value):
+        return value * self.interstAmount / 100
 
 
+class InterestsCalculationType(Enum):
+    daily = 'daily'
+    monthly = 'monthly'
+    yearly = 'yearly'
